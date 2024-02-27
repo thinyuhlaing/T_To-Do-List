@@ -6,10 +6,44 @@
   @apply relative bg-slate-400 w-96 mx-auto h-screen;
 }
 
-.boxIcon {
+.addIcon {
   @apply absolute bottom-10 right-4 w-24 h-14 text-xl text-white rounded-2xl bg-blue-500 border-4;
   @apply flex justify-center items-center;
   @apply hover:bg-blue-400;
   @apply active:bg-blue-600 duration-200 active:transition-transform active:scale-90;
 }
+
+.listBox {
+  @apply mx-3 bg-blue-400 w-[22.5rem] flex mb-5  rounded-2xl border-4  py-3 justify-evenly items-center;
+  @apply duration-200 delay-100;
+}
+
+.mark {
+  @apply flex justify-center items-center rounded-md border-4 w-6 h-6 bg-blue-400;
+}
+
+.body {
+  @apply bg-yellow-300 w-64;
+}
+
+.editIcon {
+  @apply bg-orange-400;
+}
+
+.clicked {
+  @apply flex justify-evenly items-center bg-green-400;
+}
+.clickedlistBox {
+  @apply w-80 bg-blue-400 flex mb-5  rounded-2xl border-4  py-3 justify-evenly items-center;
+  @apply duration-200 delay-100;
+} /* w */
+
+.clickedbody {
+  @apply bg-yellow-300 w-52;
+} /* w */
+
+.deleteIcon {
+  @apply bg-blue-400 mb-5 rounded-full w-10 h-16 flex justify-center items-center;
+}
+
 /* hover:-translate-y-1 hover:scale-105  duration-200  ease-in-out */

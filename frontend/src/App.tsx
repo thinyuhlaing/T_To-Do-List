@@ -14,6 +14,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ListBox from "./components/ListBox";
 import { Textarea } from "@mui/joy";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export interface Note {
   label: string;
@@ -24,7 +25,6 @@ const App = () => {
   const [noteData, setNoteData] = useState<Note[]>([]);
   const [note, setNote] = useState<Note>({ label: "", time: "" });
   const [openDialog, setOpenDialog] = useState(false);
-  console.log(noteData);
 
   const getNoteData = async () => {
     const response = await fetch("http://localhost:5000", { method: "GET" });
@@ -57,14 +57,17 @@ const App = () => {
           <DeleteOutlineIcon />
         </Box>
       </Box>
-      <Box className="bg-purple-500">
+      <Box onClick={() => console.log("Click")} className="bg-purple-500">
         {noteData.map((item, index) => (
-          <ListBox key={index} label={item.label} time={item.time} />
+          <Box>
+            <ListBox key={index} label={item.label} time={item.time} />
+            <DeleteIcon />
+          </Box>
         ))}
       </Box>
 
       <Box className="bg-black">
-        <div className="boxIcon" onClick={() => setOpenDialog(true)}>
+        <div className="addIcon" onClick={() => setOpenDialog(true)}>
           + Add
         </div>
         <Dialog open={openDialog}>

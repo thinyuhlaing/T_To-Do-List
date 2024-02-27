@@ -1,18 +1,20 @@
 [
   {
-    "label": "Hello",
-    "time": ""
+    "label": "Bake Cake",
+    "time": "1am to 2am"
   },
   {
-    "label": "Hey",
-    "time": ""
+    "label": "eat BreakFast",
+    "time": "6am to 7am"
   },
+
   {
-    "label": "Break fast",
-    "time": "7am to 8 am"
+    "label": "exercieses",
+    "time": "3pm to 4pm"
   },
+
   {
-    "label": "sleep",
-    "time": "2pm to 3pm"
+    "label": "စျေးသွားမယ်",
+    "time": "6am to 7am"
   }
 ]
