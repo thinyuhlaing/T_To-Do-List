@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .container {
-  @apply relative bg-slate-400 w-96 mx-auto h-screen;
+  @apply relative bg-slate-400 w-full mx-auto h-screen;
 }
 
 .addIcon {
@@ -14,7 +14,7 @@
 }
 
 .listBox {
-  @apply mx-3 bg-blue-400 w-[22.5rem] flex mb-5  rounded-2xl border-4  py-3 justify-evenly items-center;
+  @apply bg-blue-400 w-full flex mb-5  rounded-2xl border-4  py-3 justify-evenly items-center;
   @apply duration-200 delay-100;
 }
 
