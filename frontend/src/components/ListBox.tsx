@@ -1,16 +1,19 @@
 import { Box, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import Finished from "@mui/icons-material/Check";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Note } from "../App";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { text } from "stream/consumers";
 
-const ListBox = ({
-  id,
-  label,
-  time,
-  onDeleteNote,
-}: Note & { onDeleteNote: () => void }) => {
+export interface ListBoxProps {
+  id: number;
+  label: string;
+  time: string;
+  onDeleteNote: () => void;
+}
+
+const ListBox = ({ id, label, time, onDeleteNote }: ListBoxProps) => {
   const [close, setClose] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(true);
 
@@ -62,7 +65,9 @@ const ListBox = ({
             <Typography variant="body1">{time}</Typography>
           </Box>
         </Box>
-        <EditIcon className={"editIcon"} />
+        <Box className={"editIcon"}>
+          <EditIcon />
+        </Box>
       </Box>
       <Box className={isClicked ? "deleteIcon" : ""}>
         {isClicked ? <DeleteIcon onClick={DeleteNote} /> : ""}

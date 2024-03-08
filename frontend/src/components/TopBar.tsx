@@ -8,14 +8,14 @@ function TopBar() {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <Box>
+    <Box className="topBar">
       <SideBar open={open} setOpen={setOpen} />
-      <Box className="w-full px-3 h-[3.3rem] bg-green-500 flex justify-between items-center ">
+      <Box className="w-full px-3 h-[3.3rem] bg-[#33186B] flex justify-between items-center ">
         <Box>
-          <MenuIcon onClick={() => setOpen(true)} />
+          <MenuIcon onClick={() => setOpen(true)} className="text-white" />
         </Box>
         <Box>
-          <Typography variant="h5" sx={{}}>
+          <Typography variant="h5" className="text-white">
             To Do List
           </Typography>
         </Box>

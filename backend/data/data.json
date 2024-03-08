@@ -1,18 +1,29 @@
 [
   {
-    "label": "Dinner",
+    "label": "Hello World",
     "time": "6pm to 7pm"
   },
   {
-    "label": "breakfast",
-    "time": "6am t o7am"
+    "label": "f",
+    "time": ""
   },
   {
-    "label": "Exercises",
-    "time": "2pm to 3pm"
+    "label": "fssdf",
+    "time": ""
   },
   {
-    "label": "Play",
-    "time": "4pm to 5pm"
+    "label": "ewr",
+    "time": ""
+  },
+  {
+    "label": "ewr",
+    "time": ""
+  },
+  {
+    "label": "",
+    "time": {
+      "start": null,
+      "end": null
+    }
   }
 ]

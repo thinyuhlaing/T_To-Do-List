@@ -23,6 +23,11 @@ app.get("/", (req: Request, res: Response) => {
   res.send(data);
 });
 
+app.get("/trash", (req: Request, res: Response) => {
+  const data = fs.readFileSync("./data/trash.json");
+  res.send(data);
+});
+
 app.post("/", (req: Request, res: Response) => {
   const { label, time } = req.body;
   const newData = { label, time };
@@ -53,6 +58,17 @@ app.delete("/", (req: Request, res: Response) => {
   const trashData = { label, time };
   oldTrashData.push(trashData);
   fs.writeFileSync("./data/trash.json", JSON.stringify(oldTrashData, null, 2));
+  res.end();
+});
+
+app.delete("/trash", (req: Request, res: Response) => {
+  // deleteData
+  const { label, time }: { label: string; time: string } = req.body;
+
+  const deleteIndex = oldTrashData.findIndex((item) => item.label === label);
+  oldTrashData.splice(deleteIndex, 1);
+  fs.writeFileSync("./data/trash.json", JSON.stringify(oldTrashData, null, 2));
+
   res.end();
 });
 
