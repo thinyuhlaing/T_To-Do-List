@@ -11,51 +11,39 @@ import {
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import Textarea from "@mui/joy/Textarea";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MultiInputTimeRangeField } from "@mui/x-date-pickers-pro";
-import { Note } from "../App";
+import EditIcon from "@mui/icons-material/Edit";
+import { useState } from "react";
 
-interface CreateNoteProps {
-  openDialog: boolean;
-  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
+interface Props {
+  id: number;
+  label: string;
+  time: string;
+  editDialog: boolean;
+  setEditDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateNote = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
-  const [note, setNote] = useState<Note>({
-    label: "",
-    time: "",
-  });
+const AppEdit = ({ id, label, time, editDialog, setEditDialog }: Props) => {
+  const [note, setNote] = useState<string>("");
 
-  const sendNoteData = async () => {
-    const response = await fetch("http://localhost:5000/", {
-      headers: {
-        "content-type": "application/json",
-      },
-      method: "POST",
-
-      body: JSON.stringify(note),
-    });
-    setOpenDialog(false);
+  const handleClick = () => {
+    setEditDialog(true);
   };
 
-  const caaa = () => {
-    setNote({ label: "", time: "" });
-    setOpenDialog(true);
-  };
   return (
     <Box>
-      <div className="addIcon" onClick={caaa}>
-        + Add
-      </div>
-      <Dialog open={openDialog} className="">
+      <Box>
+        <EditIcon onClick={handleClick} />
+      </Box>
+      <Dialog open={editDialog} className="">
         <DialogTitle className="w-full h-full bg-[#dfcbf3] text-black">
           <ArrowBackIcon
-            onClick={() => setOpenDialog(false)}
+            onClick={() => setEditDialog(false)}
             className=" text-white bg-[#33186B] mr-3 -ml-4 rounded-md"
           />
-          Add Task
+          Edit
         </DialogTitle>
         <List className={"createListBox"} sx={{ p: "20px" }}>
           <Typography sx={{ mb: "0.5rem" }}>Label</Typography>
@@ -64,9 +52,7 @@ const CreateNote = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
             minRows={3}
             placeholder="Type something..."
             variant="soft"
-            onChange={(event) =>
-              setNote({ ...note, label: event.target.value })
-            }
+            value={note}
           />
         </List>
         <Divider />
@@ -96,7 +82,6 @@ const CreateNote = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
                           hour12: true,
                         })
                       );
-                      setNote({ ...note, time: formattedValues.join(" - ") });
                     } catch (err) {
                       console.log("Invalid Date");
                     }
@@ -109,24 +94,17 @@ const CreateNote = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
         <DialogActions className="bg-[#dfcbf3] text-black">
           <Button
             variant="outlined"
-            onClick={() => setOpenDialog(false)}
+            onClick={() => setEditDialog(false)}
             className=" button"
           >
             cancel
           </Button>
-          <Button
-            disabled={!note.label}
-            variant="contained"
-            onClick={sendNoteData}
-            className="button"
-          >
-            Add
+          <Button disabled={false} variant="contained" className="button">
+            Edit
           </Button>
         </DialogActions>
       </Dialog>
     </Box>
   );
 };
-
-export default CreateNote;
-// className="w-10/12 mx-auto my-2"
+export default AppEdit;

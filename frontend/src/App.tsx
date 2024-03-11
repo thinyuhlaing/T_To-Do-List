@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Layout from "./components/Layout";
+import Home from "./components/Home";
 
 export interface Note {
   label: string;
@@ -11,7 +12,7 @@ export interface Note {
 const App = () => {
   return (
     <div>
-      <Layout />
+      <Home />
     </div>
   );
 };

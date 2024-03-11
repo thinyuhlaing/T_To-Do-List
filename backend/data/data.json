@@ -1,29 +1,14 @@
 [
   {
-    "label": "Hello World",
-    "time": "6pm to 7pm"
+    "label": "Exercises",
+    "time": "03:00 PM - 03:30 PM"
   },
   {
-    "label": "f",
-    "time": ""
+    "label": "Class",
+    "time": "06:30 PM - 08:30 PM"
   },
   {
-    "label": "fssdf",
-    "time": ""
-  },
-  {
-    "label": "ewr",
-    "time": ""
-  },
-  {
-    "label": "ewr",
-    "time": ""
-  },
-  {
-    "label": "",
-    "time": {
-      "start": null,
-      "end": null
-    }
+    "label": "Sleep",
+    "time": "02:00 PM - 02:30 PM"
   }
 ]

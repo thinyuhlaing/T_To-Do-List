@@ -4,12 +4,13 @@ import TopBar from "./TopBar";
 
 interface Props {
   children?: ReactNode;
+  title: string;
 }
 
-const Layout = ({ children }: Props) => {
+const Layout = ({ children, title }: Props) => {
   return (
     <Box className="layout">
-      <TopBar />
+      <TopBar> {title}</TopBar>
       <Box className="container"> {children}</Box>
     </Box>
   );

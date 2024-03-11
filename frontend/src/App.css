@@ -9,10 +9,10 @@
   @apply h-screen w-36 bg-[#33186B] text-white mx-auto;
 }
 .topBar {
-  @apply mx-auto max-w-[430px];
-}
+  @apply sticky top-0 z-10 mx-auto max-w-[430px];
+} /*overflow-hidden sticky top-0 z-10*/
 .addIcon {
-  @apply absolute bottom-10 right-4 w-24 h-14 text-xl text-white rounded-2xl bg-[#33186B] border-4;
+  @apply absolute bottom-20 right-4 w-24 h-14 text-xl text-white rounded-2xl bg-[#33186B] border-4;
   @apply flex justify-center items-center;
   @apply hover:bg-[#472c7d];
   @apply active:bg-[#644f8e] duration-200 active:transition-transform active:scale-90;
@@ -32,7 +32,7 @@
 }
 
 .editIcon {
-  @apply flex justify-center items-center rounded-md border-2 w-7 h-7 bg-[#7360DF] text-[#000000];
+  @apply flex justify-center items-center rounded-md border-2 w-7 h-7 bg-[#8171dc] text-[#000000];
 }
 
 .clicked {
@@ -40,20 +40,24 @@
 }
 .clickedlistBox {
   @apply w-80 flex mb-5  rounded-2xl border-4  py-3 justify-evenly items-center;
-
-  @apply bg-red-400 duration-200 delay-100;
+  @apply bg-[#F28585] duration-200 delay-100;
 } /* w */
 
 .clickedbody {
-  @apply text-slate-100 bg-[#33186B]  px-5 py-2 rounded-xl;
+  @apply text-slate-100 bg-[#3e207a]  px-5 py-2 rounded-xl;
   @apply w-52;
 } /* w */
 
 .deleteIcon {
-  @apply bg-red-400 text-[#33186B]  mb-5 rounded-full w-12 h-14 flex justify-center items-center;
+  @apply bg-[#F28585] text-[#33186B]  mb-5 rounded-full w-12 h-14 flex justify-center items-center;
 }
 
 .button {
   @apply w-20 h-[2.8rem] my-3 bg-[#33186B];
 }
+
+.createListBox {
+  @apply bg-[#33186B] w-[20rem] text-white;
+}
+
 /* hover:-translate-y-1 hover:scale-105  duration-200  ease-in-out */

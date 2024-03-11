@@ -1,10 +1,14 @@
 import "../App.css";
 import { Box, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import React from "react";
+import React, { ReactNode } from "react";
 import SideBar from "./SideBar";
 
-function TopBar() {
+interface Props {
+  children?: ReactNode;
+}
+
+function TopBar({ children }: Props) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -16,7 +20,7 @@ function TopBar() {
         </Box>
         <Box>
           <Typography variant="h5" className="text-white">
-            To Do List
+            {children}
           </Typography>
         </Box>
       </Box>

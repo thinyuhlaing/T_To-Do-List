@@ -5,18 +5,29 @@ import { ReactNode, useEffect, useState } from "react";
 import { Note } from "../App";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { text } from "stream/consumers";
+import { wrap } from "module";
+import AppEdit from "./AppEdit";
 
 export interface ListBoxProps {
   id: number;
   label: string;
   time: string;
   onDeleteNote: () => void;
+  editDialog: boolean;
+  setEditDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ListBox = ({ id, label, time, onDeleteNote }: ListBoxProps) => {
+const ListBox = ({
+  id,
+  label,
+  time,
+  onDeleteNote,
+  editDialog,
+  setEditDialog,
+}: ListBoxProps) => {
   const [close, setClose] = useState<boolean>(false);
-  const [isClicked, setIsClicked] = useState<boolean>(true);
-
+  const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [idNum, setIdNum] = useState<number>(0);
   const check = () => {
     if (close) {
       setClose(false);
@@ -44,7 +55,6 @@ const ListBox = ({ id, label, time, onDeleteNote }: ListBoxProps) => {
     });
     onDeleteNote();
   };
-
   return (
     <Box className={isClicked ? "clicked" : ""}>
       <Box className={isClicked ? "clickedlistBox" : "listBox"}>
@@ -57,6 +67,7 @@ const ListBox = ({ id, label, time, onDeleteNote }: ListBoxProps) => {
         >
           <Box>
             <Typography
+              sx={{ overflow: "hidden" }}
               variant="h5"
               className={close ? "line-through" : "Hello"}
             >
@@ -65,8 +76,15 @@ const ListBox = ({ id, label, time, onDeleteNote }: ListBoxProps) => {
             <Typography variant="body1">{time}</Typography>
           </Box>
         </Box>
+
         <Box className={"editIcon"}>
-          <EditIcon />
+          <AppEdit
+            id={id}
+            label={label}
+            time={time}
+            editDialog={editDialog}
+            setEditDialog={setEditDialog}
+          />
         </Box>
       </Box>
       <Box className={isClicked ? "deleteIcon" : ""}>
