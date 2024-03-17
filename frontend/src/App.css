@@ -57,7 +57,7 @@
 }
 
 .createListBox {
-  @apply bg-[#33186B] w-[20rem] text-white;
+  @apply bg-[#402773] w-[20rem] text-white;
 }
 
 /* hover:-translate-y-1 hover:scale-105  duration-200  ease-in-out */

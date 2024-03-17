@@ -16,28 +16,25 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MultiInputTimeRangeField } from "@mui/x-date-pickers-pro";
 import { Note } from "../App";
+import { useAppDispatch } from "../store/hooks";
+import { addNote, createNote } from "../store/slices/noteSlice";
 
 interface CreateNoteProps {
   openDialog: boolean;
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateNote = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
+const NoteDialog = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
+  const dispatch = useAppDispatch();
   const [note, setNote] = useState<Note>({
     label: "",
     time: "",
   });
 
   const sendNoteData = async () => {
-    const response = await fetch("http://localhost:5000/", {
-      headers: {
-        "content-type": "application/json",
-      },
-      method: "POST",
-
-      body: JSON.stringify(note),
-    });
     setOpenDialog(false);
+    dispatch(createNote(note));
+    dispatch(addNote(note));
   };
 
   const caaa = () => {
@@ -50,7 +47,7 @@ const CreateNote = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
         + Add
       </div>
       <Dialog open={openDialog} className="">
-        <DialogTitle className="w-full h-full bg-[#dfcbf3] text-black">
+        <DialogTitle className="w-full h-full bg-slate-200 text-black">
           <ArrowBackIcon
             onClick={() => setOpenDialog(false)}
             className=" text-white bg-[#33186B] mr-3 -ml-4 rounded-md"
@@ -58,7 +55,7 @@ const CreateNote = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
           Add Task
         </DialogTitle>
         <List className={"createListBox"} sx={{ p: "20px" }}>
-          <Typography sx={{ mb: "0.5rem" }}>Label</Typography>
+          <Typography sx={{ mb: "0.5rem" }}>Task</Typography>
           <Textarea
             color="primary"
             minRows={3}
@@ -106,7 +103,7 @@ const CreateNote = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
             </LocalizationProvider>
           </Box>
         </List>
-        <DialogActions className="bg-[#dfcbf3] text-black">
+        <DialogActions className="bg-slate-200 text-black">
           <Button
             variant="outlined"
             onClick={() => setOpenDialog(false)}
@@ -128,5 +125,5 @@ const CreateNote = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
   );
 };
 
-export default CreateNote;
+export default NoteDialog;
 // className="w-10/12 mx-auto my-2"

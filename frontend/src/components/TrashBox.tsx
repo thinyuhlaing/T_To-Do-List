@@ -13,8 +13,22 @@ export interface Props {
   onDeleteNote: () => void;
 }
 const TrashBox = ({ id, label, time, onDeleteNote }: Props) => {
+  const [reRender, setReRender] = useState(false); // State to trigger re-render
+
   const note = { id: id, label: label, time: time };
 
+  const rebackData = async () => {
+    const response = await fetch("http://localhost:5000/trash", {
+      headers: {
+        "content-type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(note),
+    });
+    onDeleteNote(); // Assuming you're expecting JSON response
+  };
+
+  console.log(reRender);
   const DeleteNote = async () => {
     const response = await fetch("http://localhost:5000/trash", {
       headers: {
@@ -30,7 +44,7 @@ const TrashBox = ({ id, label, time, onDeleteNote }: Props) => {
     <Box className={"clicked"}>
       <Box className={"clickedlistBox"}>
         <Box className={"mark"}>
-          <RestoreIcon />
+          <RestoreIcon onClick={rebackData} />
         </Box>
         <Box className={"clickedbody"}>
           <Box>

@@ -15,23 +15,62 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MultiInputTimeRangeField } from "@mui/x-date-pickers-pro";
 import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../store/hooks";
+import { useDispatch } from "react-redux";
+import { Note } from "./Home";
 
-interface Props {
-  id: number;
+interface data {
+  id: string;
   label: string;
   time: string;
+}
+interface Props {
+  id: string;
+  label: string;
+  time: string;
+  noteData: any;
   editDialog: boolean;
   setEditDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AppEdit = ({ id, label, time, editDialog, setEditDialog }: Props) => {
-  const [note, setNote] = useState<string>("");
-
+const AppEdit = ({
+  id,
+  label,
+  time,
+  noteData,
+  editDialog,
+  setEditDialog,
+}: Props) => {
+  const [edit, setEdit] = useState<{ id: string; label: string; time: string }>(
+    {
+      id: id,
+      label: label,
+      time: time,
+    }
+  );
+  const [note, setNote] = useState<Note>({
+    id: id,
+    label: label,
+    time: time,
+  });
   const handleClick = () => {
     setEditDialog(true);
   };
 
+  const Edit = async () => {
+    const response = await fetch("http://localhost:5000/edit", {
+      headers: {
+        "content-type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify(note),
+    });
+    console.log(note);
+    setEditDialog(false);
+  };
+
+  console.log(note);
   return (
     <Box>
       <Box>
@@ -46,13 +85,16 @@ const AppEdit = ({ id, label, time, editDialog, setEditDialog }: Props) => {
           Edit
         </DialogTitle>
         <List className={"createListBox"} sx={{ p: "20px" }}>
-          <Typography sx={{ mb: "0.5rem" }}>Label</Typography>
+          <Typography sx={{ mb: "0.5rem" }}>Task</Typography>
           <Textarea
             color="primary"
             minRows={3}
             placeholder="Type something..."
             variant="soft"
-            value={note}
+            defaultValue={label}
+            onChange={(event) =>
+              setNote({ ...note, label: event.target.value })
+            }
           />
         </List>
         <Divider />
@@ -82,6 +124,7 @@ const AppEdit = ({ id, label, time, editDialog, setEditDialog }: Props) => {
                           hour12: true,
                         })
                       );
+                      setNote({ ...note, time: formattedValues.join(" - ") });
                     } catch (err) {
                       console.log("Invalid Date");
                     }
@@ -99,7 +142,7 @@ const AppEdit = ({ id, label, time, editDialog, setEditDialog }: Props) => {
           >
             cancel
           </Button>
-          <Button disabled={false} variant="contained" className="button">
+          <Button onClick={Edit} variant="contained" className="button">
             Edit
           </Button>
         </DialogActions>

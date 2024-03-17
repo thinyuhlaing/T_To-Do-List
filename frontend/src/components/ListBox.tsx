@@ -7,9 +7,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { text } from "stream/consumers";
 import { wrap } from "module";
 import AppEdit from "./AppEdit";
+import { useAppSelector } from "../store/hooks";
 
 export interface ListBoxProps {
-  id: number;
+  id: string;
   label: string;
   time: string;
   onDeleteNote: () => void;
@@ -35,8 +36,8 @@ const ListBox = ({
       setClose(true);
     }
   };
-
   const handleClick = () => {
+    console.log("id:", id);
     if (isClicked) {
       setIsClicked(false);
     } else {
@@ -79,11 +80,12 @@ const ListBox = ({
 
         <Box className={"editIcon"}>
           <AppEdit
+            editDialog={editDialog}
+            setEditDialog={setEditDialog}
             id={id}
             label={label}
             time={time}
-            editDialog={editDialog}
-            setEditDialog={setEditDialog}
+            noteData={note}
           />
         </Box>
       </Box>
