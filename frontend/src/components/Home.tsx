@@ -8,13 +8,11 @@ import { useAppSelector } from "../store/hooks";
 
 export interface Note {
   id: string;
-  label: string;
+  task: string;
   time: string;
 }
 
 const Home = () => {
-  const note = useAppSelector((state) => state.note.notes);
-
   const [noteData, setNoteData] = useState<Note[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [editDialog, setEditDialog] = useState(false);
@@ -26,21 +24,11 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (!openDialog) {
+    if (!openDialog || !editDialog) {
       getNoteData();
+      console.log("GET NOTE DATA 1");
     }
-  }, [openDialog]);
-
-  useEffect(() => {
-    if (!editDialog) {
-      getNoteData();
-    }
-  }, [editDialog]);
-
-  const handleDeleteNote = () => {
-    // After deleting a note, fetch the updated note data
-    getNoteData();
-  };
+  }, [openDialog, editDialog]);
 
   return (
     <Layout title={"To Do List"}>
@@ -49,9 +37,9 @@ const Home = () => {
           <ListBox
             key={index}
             id={item.id}
-            label={item.label}
+            task={item.task}
             time={item.time}
-            onDeleteNote={handleDeleteNote}
+            onDeleteNote={getNoteData}
             editDialog={editDialog}
             setEditDialog={setEditDialog}
           />

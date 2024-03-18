@@ -8,10 +8,16 @@ const PORT = 5000;
 app.use(express.json());
 app.use(cors());
 
-let oldData: { id?: string; label: string; time: string }[] = [];
-let oldTrashData: { id?: string; label: string; time: string }[] = [];
+export interface Note {
+  id: string;
+  task: string;
+  time: string;
+}
+
+let oldData: Note[] = [];
+let oldTrashData: Note[] = [];
 try {
-  const userData = fs.readFileSync("./data/data.json", "utf-8");
+  const userData = fs.readFileSync("./data/data.json", "utf-8"); // "utf-8" --> change into string
   oldData = JSON.parse(userData);
 
   const trashUserData = fs.readFileSync("./data/trash.json", "utf-8");
@@ -20,98 +26,118 @@ try {
   oldData = [];
   oldTrashData = [];
 }
-app.get("/", (req: Request, res: Response) => {
-  const data = fs.readFileSync("./data/data.json");
-  res.send(data);
-});
-
-app.get("/trash", (req: Request, res: Response) => {
-  const data = fs.readFileSync("./data/trash.json");
-  res.send(data);
-});
 
 app.post("/", (req: Request, res: Response) => {
-  const { label, time } = req.body;
+  const { task, time } = req.body;
   const id = nanoid.nanoid();
 
-  const newData: { id: string; label: string; time: string } = {
+  const newData: Note = {
     id,
-    label,
+    task,
     time,
   };
   oldData.push(newData);
   fs.writeFileSync("./data/data.json", JSON.stringify(oldData, null, 2));
 
   res.end();
-});
+}); // createNoteData
 
-app.post("/trash", (req: Request, res: Response) => {
-  const { label, time }: { label: string; time: string } = req.body;
+app.get("/", (req: Request, res: Response) => {
+  res.send(oldData);
+}); // sendNoteData
+
+app.get("/trash", (req: Request, res: Response) => {
+  const data = fs.readFileSync("./data/trash.json");
+  res.send(data);
+}); // sendTrashData
+
+app.put("/trash", (req: Request, res: Response) => {
+  const { id, task, time }: Note = req.body;
+
   // post
-  const newData = { label, time };
+  const newData = { id, task, time };
   oldData.push(newData);
   fs.writeFileSync("./data/data.json", JSON.stringify(oldData, null, 2));
 
-  res.end();
   // delete
-  const data = oldTrashData.find((item) => item.label === label); // check
+  const checkId = oldTrashData.find((item) => item.id === id); // check
 
-  if (!data) {
+  if (checkId) {
+    // if have find index and delete it
+    const deleteIndex = oldTrashData.findIndex((item) => item.id === id);
+    oldTrashData.splice(deleteIndex, 1);
+    fs.writeFileSync(
+      "./data/trash.json",
+      JSON.stringify(oldTrashData, null, 2)
+    );
+  } else {
+    // if there's haven't just return
     res.status(404).json({ error: "Data not found" });
     return;
   }
-  const deleteIndex = oldTrashData.findIndex((item) => item.label === label);
-  oldTrashData.splice(deleteIndex, 1);
-  fs.writeFileSync("./data/trash.json", JSON.stringify(oldTrashData, null, 2));
-});
+
+  res.end();
+}); // deleteTrashData and noteDataCreate
 
 app.delete("/", (req: Request, res: Response) => {
+  const { id, task, time }: Note = req.body;
+
+  // PosttrashData
+
+  const trashData = { id, task, time };
+  oldTrashData.push(trashData);
+  fs.writeFileSync("./data/trash.json", JSON.stringify(oldTrashData, null, 2));
+
   // deleteData
 
-  const { id, label, time }: { id: string; label: string; time: string } =
-    req.body;
+  const checkId = oldData.find((item) => item.id === id); // check there is has or not
 
-  const data = oldData.find((item) => item.label === label); // check
-
-  console.log("server :", data);
-  if (!data) {
+  if (checkId) {
+    // if have find index and delete it
+    const deleteIndex = oldData.findIndex((item) => item.id === id);
+    oldData.splice(deleteIndex, 1);
+    fs.writeFileSync("./data/data.json", JSON.stringify(oldData, null, 2));
+  } else {
+    // if there's haven't just return
     res.status(404).json({ error: "Data not found" });
     return;
   }
-  const deleteIndex = oldData.findIndex((item) => item.label === label);
-  oldData.splice(deleteIndex, 1);
-  fs.writeFileSync("./data/data.json", JSON.stringify(oldData, null, 2));
 
-  // trashData
-
-  const trashData = { id, label, time };
-  oldTrashData.push(trashData);
-  fs.writeFileSync("./data/trash.json", JSON.stringify(oldTrashData, null, 2));
   res.end();
-});
+}); // PosttrashData and deleteNoteData
 
 app.delete("/trash", (req: Request, res: Response) => {
   // deleteData
-  const { label, time }: { label: string; time: string } = req.body;
+  const { id }: Note = req.body;
 
-  const deleteIndex = oldTrashData.findIndex((item) => item.label === label);
-  oldTrashData.splice(deleteIndex, 1);
-  fs.writeFileSync("./data/trash.json", JSON.stringify(oldTrashData, null, 2));
+  const checkId = oldTrashData.find((item) => item.id === id); // check
+  if (checkId) {
+    const deleteIndex = oldTrashData.findIndex((item) => item.id === id);
+    oldTrashData.splice(deleteIndex, 1);
+    fs.writeFileSync(
+      "./data/trash.json",
+      JSON.stringify(oldTrashData, null, 2)
+    );
+  } else {
+    res.status(404).json({ error: "Data not found" });
+    return;
+  }
 
   res.end();
-});
+}); // deleteTrashData
 
 app.put("/edit", (req: Request, res: Response) => {
-  const { id, label, time } = req.body;
+  const { id, task, time } = req.body;
+
   const index = oldData.findIndex((item) => item.id === id);
-  oldData[index].label = label;
+  oldData[index].task = task;
   oldData[index].time = time;
 
   fs.writeFileSync("./data/data.json", JSON.stringify(oldData, null, 2));
   console.log("Data updated:", oldData[index]);
 
   res.end();
-});
+}); // editNoteData
 
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
 // app.post("/", (req: Request, res: Response) => {

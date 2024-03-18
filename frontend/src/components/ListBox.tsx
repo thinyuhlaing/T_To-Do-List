@@ -2,7 +2,6 @@ import { Box, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import Finished from "@mui/icons-material/Check";
 import { ReactNode, useEffect, useState } from "react";
-import { Note } from "../App";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { text } from "stream/consumers";
 import { wrap } from "module";
@@ -11,7 +10,7 @@ import { useAppSelector } from "../store/hooks";
 
 export interface ListBoxProps {
   id: string;
-  label: string;
+  task: string;
   time: string;
   onDeleteNote: () => void;
   editDialog: boolean;
@@ -20,7 +19,7 @@ export interface ListBoxProps {
 
 const ListBox = ({
   id,
-  label,
+  task,
   time,
   onDeleteNote,
   editDialog,
@@ -28,15 +27,18 @@ const ListBox = ({
 }: ListBoxProps) => {
   const [close, setClose] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(false);
-  const [idNum, setIdNum] = useState<number>(0);
+
   const check = () => {
+    // check text line-throught or not
     if (close) {
       setClose(false);
     } else {
       setClose(true);
     }
   };
+
   const handleClick = () => {
+    //check for animation
     console.log("id:", id);
     if (isClicked) {
       setIsClicked(false);
@@ -44,7 +46,7 @@ const ListBox = ({
       setIsClicked(true);
     }
   };
-  const note = { id: id, label: label, time: time };
+  const note = { id: id, task: task, time: time };
 
   const DeleteNote = async () => {
     const response = await fetch("http://localhost:5000/", {
@@ -72,7 +74,7 @@ const ListBox = ({
               variant="h5"
               className={close ? "line-through" : "Hello"}
             >
-              {label}
+              {task}
             </Typography>
             <Typography variant="body1">{time}</Typography>
           </Box>
@@ -80,12 +82,11 @@ const ListBox = ({
 
         <Box className={"editIcon"}>
           <AppEdit
+            id={id}
+            task={task}
+            time={time}
             editDialog={editDialog}
             setEditDialog={setEditDialog}
-            id={id}
-            label={label}
-            time={time}
-            noteData={note}
           />
         </Box>
       </Box>

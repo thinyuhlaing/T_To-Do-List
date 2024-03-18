@@ -11,7 +11,7 @@
 .topBar {
   @apply sticky top-0 z-10 mx-auto max-w-[430px];
 } /*overflow-hidden sticky top-0 z-10*/
-.addIcon {
+.addButton {
   @apply absolute bottom-20 right-4 w-24 h-14 text-xl text-white rounded-2xl bg-[#33186B] border-4;
   @apply flex justify-center items-center;
   @apply hover:bg-[#472c7d];
@@ -60,4 +60,13 @@
   @apply bg-[#402773] w-[20rem] text-white;
 }
 
+.dialogTitle {
+  @apply w-full h-full bg-slate-200 text-black;
+}
+.arrowIcon {
+  @apply text-white bg-[#33186B] mr-3 -ml-4 rounded-md;
+}
+.timeList {
+  @apply bg-[#E3EFFB] rounded-lg pl-3 py-2;
+}
 /* hover:-translate-y-1 hover:scale-105  duration-200  ease-in-out */

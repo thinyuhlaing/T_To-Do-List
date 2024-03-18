@@ -15,9 +15,9 @@ import { useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MultiInputTimeRangeField } from "@mui/x-date-pickers-pro";
-import { Note } from "../App";
 import { useAppDispatch } from "../store/hooks";
 import { addNote, createNote } from "../store/slices/noteSlice";
+import { Note } from "./types/types";
 
 interface CreateNoteProps {
   openDialog: boolean;
@@ -25,32 +25,36 @@ interface CreateNoteProps {
 }
 
 const NoteDialog = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
-  const dispatch = useAppDispatch();
   const [note, setNote] = useState<Note>({
-    label: "",
+    task: "",
     time: "",
   });
 
-  const sendNoteData = async () => {
+  const createNoteData = async () => {
+    const response = await fetch("http://localhost:5000/", {
+      headers: {
+        "content-type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(note),
+    });
     setOpenDialog(false);
-    dispatch(createNote(note));
-    dispatch(addNote(note));
   };
 
-  const caaa = () => {
-    setNote({ label: "", time: "" });
+  const handleClick = () => {
+    setNote({ task: "", time: "" });
     setOpenDialog(true);
   };
   return (
     <Box>
-      <div className="addIcon" onClick={caaa}>
+      <div className="addButton" onClick={handleClick}>
         + Add
       </div>
       <Dialog open={openDialog} className="">
-        <DialogTitle className="w-full h-full bg-slate-200 text-black">
+        <DialogTitle className="dialogTitle">
           <ArrowBackIcon
             onClick={() => setOpenDialog(false)}
-            className=" text-white bg-[#33186B] mr-3 -ml-4 rounded-md"
+            className="arrowIcon"
           />
           Add Task
         </DialogTitle>
@@ -61,15 +65,13 @@ const NoteDialog = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
             minRows={3}
             placeholder="Type something..."
             variant="soft"
-            onChange={(event) =>
-              setNote({ ...note, label: event.target.value })
-            }
+            onChange={(event) => setNote({ ...note, task: event.target.value })}
           />
         </List>
         <Divider />
         <List className={"createListBox"} sx={{ p: "20px" }}>
           <Typography sx={{ mb: "0.5rem" }}> Time</Typography>
-          <Box className="bg-[#E3EFFB] rounded-lg pl-3 py-2 ">
+          <Box className="timeList">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer
                 components={[
@@ -112,9 +114,9 @@ const NoteDialog = ({ openDialog, setOpenDialog }: CreateNoteProps) => {
             cancel
           </Button>
           <Button
-            disabled={!note.label}
+            disabled={!note.task}
             variant="contained"
-            onClick={sendNoteData}
+            onClick={createNoteData}
             className="button"
           >
             Add

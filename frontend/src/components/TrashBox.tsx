@@ -1,34 +1,27 @@
 import { Box, Typography } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import Finished from "@mui/icons-material/Check";
-import { ReactNode, useEffect, useState } from "react";
-import { Note } from "../App";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { text } from "stream/consumers";
 import RestoreIcon from "@mui/icons-material/Restore";
+
 export interface Props {
-  id: number;
-  label: string;
+  id: string;
+  task: string;
   time: string;
   onDeleteNote: () => void;
 }
-const TrashBox = ({ id, label, time, onDeleteNote }: Props) => {
-  const [reRender, setReRender] = useState(false); // State to trigger re-render
-
-  const note = { id: id, label: label, time: time };
+const TrashBox = ({ id, task, time, onDeleteNote }: Props) => {
+  const note = { id: id, task: task, time: time };
 
   const rebackData = async () => {
     const response = await fetch("http://localhost:5000/trash", {
       headers: {
         "content-type": "application/json",
       },
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify(note),
     });
     onDeleteNote(); // Assuming you're expecting JSON response
   };
 
-  console.log(reRender);
   const DeleteNote = async () => {
     const response = await fetch("http://localhost:5000/trash", {
       headers: {
@@ -48,7 +41,7 @@ const TrashBox = ({ id, label, time, onDeleteNote }: Props) => {
         </Box>
         <Box className={"clickedbody"}>
           <Box>
-            <Typography variant="h5">{label}</Typography>
+            <Typography variant="h5">{task}</Typography>
             <Typography variant="body1">{time}</Typography>
           </Box>
         </Box>

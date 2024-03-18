@@ -20,45 +20,22 @@ import { useAppSelector } from "../store/hooks";
 import { useDispatch } from "react-redux";
 import { Note } from "./Home";
 
-interface data {
-  id: string;
-  label: string;
-  time: string;
-}
 interface Props {
   id: string;
-  label: string;
+  task: string;
   time: string;
-  noteData: any;
   editDialog: boolean;
   setEditDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AppEdit = ({
-  id,
-  label,
-  time,
-  noteData,
-  editDialog,
-  setEditDialog,
-}: Props) => {
-  const [edit, setEdit] = useState<{ id: string; label: string; time: string }>(
-    {
-      id: id,
-      label: label,
-      time: time,
-    }
-  );
+const AppEdit = ({ id, task, time, editDialog, setEditDialog }: Props) => {
   const [note, setNote] = useState<Note>({
     id: id,
-    label: label,
+    task: task,
     time: time,
   });
-  const handleClick = () => {
-    setEditDialog(true);
-  };
 
-  const Edit = async () => {
+  const editData = async () => {
     const response = await fetch("http://localhost:5000/edit", {
       headers: {
         "content-type": "application/json",
@@ -74,13 +51,13 @@ const AppEdit = ({
   return (
     <Box>
       <Box>
-        <EditIcon onClick={handleClick} />
+        <EditIcon onClick={() => setEditDialog(false)} />
       </Box>
       <Dialog open={editDialog} className="">
-        <DialogTitle className="w-full h-full bg-[#dfcbf3] text-black">
+        <DialogTitle className="dialogTitle">
           <ArrowBackIcon
             onClick={() => setEditDialog(false)}
-            className=" text-white bg-[#33186B] mr-3 -ml-4 rounded-md"
+            className="arrowIcon"
           />
           Edit
         </DialogTitle>
@@ -91,16 +68,16 @@ const AppEdit = ({
             minRows={3}
             placeholder="Type something..."
             variant="soft"
-            defaultValue={label}
+            defaultValue={task}
             onChange={(event) =>
-              setNote({ ...note, label: event.target.value })
+              setNote({ ...note, task: event.target.value })
             }
           />
         </List>
         <Divider />
         <List className={"createListBox"} sx={{ p: "20px" }}>
           <Typography sx={{ mb: "0.5rem" }}> Time</Typography>
-          <Box className="bg-[#E3EFFB] rounded-lg pl-3 py-2 ">
+          <Box className="timeList">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer
                 components={[
@@ -134,7 +111,7 @@ const AppEdit = ({
             </LocalizationProvider>
           </Box>
         </List>
-        <DialogActions className="bg-[#dfcbf3] text-black">
+        <DialogActions className="bg-slate-200 text-black">
           <Button
             variant="outlined"
             onClick={() => setEditDialog(false)}
@@ -142,7 +119,7 @@ const AppEdit = ({
           >
             cancel
           </Button>
-          <Button onClick={Edit} variant="contained" className="button">
+          <Button onClick={editData} variant="contained" className="button">
             Edit
           </Button>
         </DialogActions>

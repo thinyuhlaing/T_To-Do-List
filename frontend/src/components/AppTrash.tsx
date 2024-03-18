@@ -8,7 +8,7 @@ import TrashBox from "./TrashBox";
 const AppTrash = () => {
   const [noteData, setNoteData] = useState<Note[]>([]);
 
-  const getNoteData = async () => {
+  const getTrashData = async () => {
     const response = await fetch("http://localhost:5000/trash", {
       method: "GET",
     });
@@ -17,12 +17,8 @@ const AppTrash = () => {
     console.log("getnote data rendering ");
   };
 
-  const handleDeleteNote = () => {
-    // After deleting a note, fetch the updated note data
-    getNoteData();
-  };
   useEffect(() => {
-    getNoteData();
+    getTrashData();
   }, []);
 
   return (
@@ -31,10 +27,10 @@ const AppTrash = () => {
         {noteData.map((item, index) => (
           <TrashBox
             key={index}
-            id={index}
-            label={item.label}
+            id={item.id}
+            task={item.task}
             time={item.time}
-            onDeleteNote={handleDeleteNote}
+            onDeleteNote={getTrashData} // After deleting a note, fetch the updated note data
           />
         ))}
       </Box>
